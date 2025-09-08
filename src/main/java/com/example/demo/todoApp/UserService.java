@@ -1,15 +1,13 @@
 package com.example.demo.todoApp;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-@Service 
+@Service
 public class UserService {
 
 	private UserRepository userRepository;
-	
 	
 	public UserService(UserRepository userRepository) {
 		this.userRepository = userRepository;
@@ -20,10 +18,7 @@ public class UserService {
 		return userRepository.findAll();
 	}
 	
-	
 	User addUser (User user) {
 		return userRepository.save(user);
 	}
-	
-	
 }

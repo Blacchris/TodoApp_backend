@@ -13,14 +13,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "/api/todos")
+@RequestMapping("/api/todos")
 @CrossOrigin("*")
 public class TodoController {
 
+    private final TodoRepository todoRepository;
+
 	private TodoService todoService;
-	
-	public TodoController (TodoService todoService) {
+
+	public TodoController(TodoService todoService, TodoRepository todoRepository) {
 		this.todoService = todoService;
+		this.todoRepository = todoRepository;
 	}
 	
 	@GetMapping
@@ -29,8 +32,13 @@ public class TodoController {
 	}
 	
 	@PostMapping
-	void addTodo (@RequestBody TodoApp todoApp) {
-		todoService.addTodo(todoApp);
+	void addTodo (@RequestBody TodoApp tooApp) {
+		todoService.addTodo(tooApp);
+	}
+	
+	@PutMapping("/{id}")
+	TodoApp updateTodo (@PathVariable Long id, @RequestBody TodoApp todoApp) {
+		return todoService.updateTodo(id, todoApp);
 	}
 	
 	@DeleteMapping("/{id}")
@@ -38,9 +46,5 @@ public class TodoController {
 		todoService.deleteTodo(id);
 	}
 	
-	@PutMapping("/{id}")
-	TodoApp updateTodo (@PathVariable Long id, @RequestBody TodoApp todoApp) {
-		return todoService.updateTodo(id, todoApp);
-	}
 	
 }

@@ -1,5 +1,7 @@
 package com.example.demo.todoApp;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,7 +13,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table
 public class TodoApp {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -20,23 +22,21 @@ public class TodoApp {
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
+	@JsonBackReference
 	private User user;
 	
-	public TodoApp () {}
-
-	public TodoApp(Long id, String name, String date, User user) {
-		super();
+	public TodoApp() {}
+	
+	public TodoApp(Long id, String name, String date) {
 		this.id = id;
 		this.name = name;
 		this.date = date;
-		this.user = user;
 	}
-
-	public TodoApp(String name, String date, User user) {
+	
+	public TodoApp(String name, String date) {
 		super();
 		this.name = name;
 		this.date = date;
-		this.user = user;
 	}
 
 	public Long getId() {
@@ -62,17 +62,12 @@ public class TodoApp {
 	public void setDate(String date) {
 		this.date = date;
 	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	};
+	
+	
 	
 	
 
+	
 	
 	
 }

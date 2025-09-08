@@ -9,18 +9,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
-@RequestMapping("/api/users")
-@CrossOrigin("*")
+@RequestMapping(path = "/api/users")
+@CrossOrigin("*") 
 public class UserController {
 
+    private final TodoService todoService;
+	
 	private UserService userService;
 
-	public UserController(UserService userService) {
+	public UserController(UserService userService, TodoService todoService) {
 		this.userService = userService;
+		this.todoService = todoService;
 	}
-
+	
 	@GetMapping
 	List<User> getUsers () {
 		return userService.getUsers();

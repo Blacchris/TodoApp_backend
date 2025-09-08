@@ -4,13 +4,13 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class TodoService {
 
 	private TodoRepository todoRepository;
-	
-	
-	public TodoService (TodoRepository todoRepository) {
+
+	public TodoService(TodoRepository todoRepository) {
 		this.todoRepository = todoRepository;
 	}
 	
@@ -25,16 +25,15 @@ public class TodoService {
 	void deleteTodo (Long id) {
 		todoRepository.deleteById(id);
 	}
-
-	 TodoApp updateTodo(Long id, TodoApp todoApp) {
-		TodoApp existingTodo = todoRepository.findById(id)
-				.orElseThrow(() -> new IllegalStateException("Todo with id: "+ id +" does not exist"));
-		existingTodo.setName(todoApp.getName());
-		existingTodo.setDate(todoApp.getDate());
-		
-		return todoRepository.save(existingTodo);
+	
+	TodoApp updateTodo (Long id, TodoApp todoApp) {
+		TodoApp exisTodoApp = todoRepository.findById(id)
+				.orElseThrow(() -> new IllegalStateException("Todo with id " + id + " does not exist"));
+		exisTodoApp.setName(todoApp.getName());
+		exisTodoApp.setDate(todoApp.getDate());
+	
+		return todoRepository.save(exisTodoApp);
 	}
-
 	
 	
 	
