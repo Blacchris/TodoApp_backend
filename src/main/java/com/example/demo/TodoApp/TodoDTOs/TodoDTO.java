@@ -1,32 +1,31 @@
-package com.example.demo.TodoApp;
+package com.example.demo.TodoApp.TodoDTOs;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
+import com.example.demo.TodoApp.Users;
 
-@Entity
-@Table(name = "Todo")
-public class Todo {
+public class TodoDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String date;
     private String description;
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable= false)
-    @JsonBackReference
-    private Users user;
+    private UserDTO userDTO;
 
-    public Todo(Long id, String name, String date, String description, Users user) {
+    public TodoDTO () {};
+
+    public TodoDTO(Long id, String name, String date, String description, UserDTO userDTO) {
         this.id = id;
         this.name = name;
         this.date = date;
         this.description = description;
-        this.user = user;
+        this.userDTO = userDTO;
     }
 
-    public Todo() {}
+    public TodoDTO(Long id, String name, String date, String description) {
+        this.id = id;
+        this.name = name;
+        this.date = date;
+        this.description = description;
+    }
 
     public Long getId() {
         return id;
@@ -60,11 +59,12 @@ public class Todo {
         this.description = description;
     }
 
-    public Users getUser() {
-        return user;
-    }
-    public void setUser(Users user) {
-        this.user = user;
+
+    public UserDTO getUserDTO() {
+        return userDTO;
     }
 
+    public void setUserDTO(UserDTO userDTO) {
+        this.userDTO = userDTO;
+    }
 }
