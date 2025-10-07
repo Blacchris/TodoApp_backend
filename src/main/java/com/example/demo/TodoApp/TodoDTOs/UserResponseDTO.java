@@ -1,23 +1,21 @@
 package com.example.demo.TodoApp.TodoDTOs;
 
-import com.example.demo.TodoApp.Todo;
-
 import java.util.List;
 
-public class UserDTO {
+public class UserResponseDTO {
     private Long id;
     private String username;
     private String email;
-    private List<TodoDTO> todoDTOs;
+    private List<TodoResponseDTO> todoResponseDTOS;
 
-    public UserDTO(Long id, String username, String email, List<TodoDTO> todoDTOs) {
+    public UserResponseDTO(Long id, String username, String email, List<TodoResponseDTO> todoResponseDTOS) {
         this.id = id;
         this.username = username;
         this.email = email;
-        this.todoDTOs = todoDTOs;
+        this.todoResponseDTOS = todoResponseDTOS;
     }
 
-    public UserDTO(Long id, String username, String email) {
+    public UserResponseDTO(Long id, String username, String email) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -47,11 +45,11 @@ public class UserDTO {
         this.email = email;
     }
 
-    public List<TodoDTO> getTodoDTOs() {
-        return todoDTOs;
+    public List<TodoResponseDTO> getTodoDTOs() {
+        return todoResponseDTOS;
     }
 
-    public void setTodoDTOs(List<TodoDTO> todoDTOs) {
-        this.todoDTOs = todoDTOs;
+    public void setTodoDTOs(List<TodoResponseDTO> todoResponseDTOS) {
+        this.todoResponseDTOS = todoResponseDTOS;
     }
 }

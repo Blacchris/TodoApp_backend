@@ -18,6 +18,8 @@ public class Todo {
     @JsonBackReference
     private Users user;
 
+    public Todo() {}
+
     public Todo(Long id, String name, String date, String description, Users user) {
         this.id = id;
         this.name = name;
@@ -26,7 +28,12 @@ public class Todo {
         this.user = user;
     }
 
-    public Todo() {}
+    public Todo(String name, String date, String description, Users user) {
+        this.name = name;
+        this.date = date;
+        this.description = description;
+        this.user = user;
+    }
 
     public Long getId() {
         return id;

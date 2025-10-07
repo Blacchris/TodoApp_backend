@@ -3,6 +3,7 @@ package com.example.demo.TodoApp;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,10 +16,9 @@ public class Users {
     private String username;
     private String email;
     private String password;
-
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<Todo> todos;
+    private List<Todo> todos = new ArrayList<>();
 
     public Users () {};
 
@@ -28,6 +28,12 @@ public class Users {
         this.email = email;
         this.password = password;
         this.todos = todos;
+    }
+
+    public Users(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
     }
 
     public long getId() {

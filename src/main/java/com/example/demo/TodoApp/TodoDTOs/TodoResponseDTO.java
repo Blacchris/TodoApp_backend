@@ -1,26 +1,24 @@
 package com.example.demo.TodoApp.TodoDTOs;
 
-import com.example.demo.TodoApp.Users;
-
-public class TodoDTO {
+public class TodoResponseDTO {
 
     private Long id;
     private String name;
     private String date;
     private String description;
-    private UserDTO userDTO;
+    private UserResponseDTO userResponseDTO;
 
-    public TodoDTO () {};
+    public TodoResponseDTO() {};
 
-    public TodoDTO(Long id, String name, String date, String description, UserDTO userDTO) {
+    public TodoResponseDTO(Long id, String name, String date, String description, UserResponseDTO userResponseDTO) {
         this.id = id;
         this.name = name;
         this.date = date;
         this.description = description;
-        this.userDTO = userDTO;
+        this.userResponseDTO = userResponseDTO;
     }
 
-    public TodoDTO(Long id, String name, String date, String description) {
+    public TodoResponseDTO(Long id, String name, String date, String description) {
         this.id = id;
         this.name = name;
         this.date = date;
@@ -60,11 +58,11 @@ public class TodoDTO {
     }
 
 
-    public UserDTO getUserDTO() {
-        return userDTO;
+    public UserResponseDTO getUserDTO() {
+        return userResponseDTO;
     }
 
-    public void setUserDTO(UserDTO userDTO) {
-        this.userDTO = userDTO;
+    public void setUserDTO(UserResponseDTO userResponseDTO) {
+        this.userResponseDTO = userResponseDTO;
     }
 }

@@ -1,8 +1,9 @@
 package com.example.demo.TodoApp;
 
 import com.example.demo.TodoApp.TodoDTOs.TodoRequestDTO;
-import com.example.demo.TodoApp.TodoDTOs.TodoDTO;
-import com.example.demo.TodoApp.TodoDTOs.UserDTO;
+import com.example.demo.TodoApp.TodoDTOs.TodoResponseDTO;
+import com.example.demo.TodoApp.TodoDTOs.UserRequestDTO;
+import com.example.demo.TodoApp.TodoDTOs.UserResponseDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,58 +20,68 @@ public class TodoService {
         this.usersRepository = usersRepository;
     }
 
-    List<TodoDTO> getTodos () {
-        return todoRepository.findAll().stream()
-                .map(todo -> new TodoDTO(
-                        todo.getId(),
-                        todo.getName(),
-                        todo.getDate(),
-                        todo.getDescription(),
-                        (todo.getUser() != null)
-                       ? new UserDTO(
-                                todo.getUser().getId(),
-                                todo.getUser().getUsername(),
-                                todo.getUser().getEmail()
-                        ) : null
-                )).collect(Collectors.toList());
+    public List<TodoResponseDTO> getAllTodos () {
+        return todoRepository.findAll()
+                .stream()
+                .map(this::fetchAllTodosWithUser)
+                .collect(Collectors.toList());
     }
-  TodoDTO addTodo (Long id, TodoRequestDTO requestDTO) {
-        Users user = usersRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("Users not found"));
-        Todo todo = new Todo();
-        todo.setName(requestDTO.getName());
-        todo.setDate(requestDTO.getDate());
-        todo.setDescription(requestDTO.getDescription());
-        todo.setUser(user);
 
-        Todo saved = todoRepository.save(todo);
-        return new TodoDTO(
-                saved.getId(),
-                saved.getName(),
-                saved.getDate(),
-                saved.getDescription(),
-                new UserDTO(
-                        saved.getUser().getId(),
-                        saved.getUser().getUsername(),
-                        saved.getUser().getEmail()
+    public TodoResponseDTO getTodoById (Long id) {
+        Todo found = todoRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException(id + " not found!"));
+        return fetchAllTodosWithUser(found);
+    }
+
+//    public TodoResponseDTO getTodoByUserId (Long id) {
+//        Users user = usersRepository.findById(id)
+//                .orElseThrow(() -> new IllegalStateException(id + " not found!"));
+//
+//
+//    }
+
+    public TodoResponseDTO createTodo (Long id, TodoRequestDTO todoRequestDTO) {
+        Users user = usersRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException(id + " not found!"));
+        return fetchAllTodosWithUser(
+                todoRepository.save(
+                        new Todo(
+                                todoRequestDTO.getName(),
+                                todoRequestDTO.getDate(),
+                                todoRequestDTO.getDescription(),
+                                user
+                        )
                 )
         );
     }
 
-    Todo updateTodo (Long id, Todo todo) {
-        Todo existingTodo = todoRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException(id + " is not found!"));
-        existingTodo.setName(todo.getName());
-        existingTodo.setDate(todo.getDate());
-        existingTodo.setDescription(todo.getDescription());
-        return todoRepository.save(existingTodo);
+    public TodoResponseDTO updateTodo (Long id, TodoRequestDTO todoRequestDTO) {
+        Todo todo = todoRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException("Todo with id: " + id + " not found!"));
+        todo.setName(todoRequestDTO.getName());
+        todo.setDate(todoRequestDTO.getDate());
+        todo.setDescription(todoRequestDTO.getDescription());
+
+        return fetchAllTodosWithUser(todoRepository.save(todo));
     }
 
-    void deleteTodo (Long id) {
+    public void deleteTodoById (Long id) {
         todoRepository.deleteById(id);
     }
 
-
+    public TodoResponseDTO fetchAllTodosWithUser (Todo todo) {
+        return new TodoResponseDTO(
+                todo.getId(),
+                todo.getName(),
+                todo.getDate(),
+                todo.getDescription(),
+                new UserResponseDTO(
+                        todo.getUser().getId(),
+                        todo.getUser().getUsername(),
+                        todo.getUser().getEmail()
+                )
+        );
+    }
 
 
 

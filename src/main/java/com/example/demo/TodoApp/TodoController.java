@@ -1,14 +1,17 @@
 package com.example.demo.TodoApp;
 
-import com.example.demo.TodoApp.TodoDTOs.TodoDTO;
+import com.example.demo.TodoApp.TodoDTOs.TodoResponseDTO;
 import com.example.demo.TodoApp.TodoDTOs.TodoRequestDTO;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
-@CrossOrigin("*")
+@RequestMapping(path = "/api/todos")
+@CrossOrigin(originPatterns = "*")
 public class TodoController {
 
     private final TodoService todoService;
@@ -18,34 +21,32 @@ public class TodoController {
     }
 
     @GetMapping
-    List<TodoDTO> getTodos() {
-        return todoService.getTodos();
+    public ResponseEntity<List<TodoResponseDTO>> getAllTodos () {
+        return ResponseEntity.ok(todoService.getAllTodos());
     }
 
-    @PostMapping("/{id}/todos")
-    TodoDTO addTodo (@PathVariable Long id, @RequestBody TodoRequestDTO todoRequestDTO) {
-        return todoService.addTodo(id, todoRequestDTO);
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<TodoResponseDTO> getTodoById (@PathVariable Long id) {
+        return ResponseEntity.ok(todoService.getTodoById(id));
     }
 
-    @PutMapping("/{id}")
-    Todo updateTodo (@PathVariable Long id,@RequestBody Todo todo) {
-        return todoService.updateTodo(id, todo);
+    @PostMapping(path = "/{id}")
+    public ResponseEntity<TodoResponseDTO> createTodo (@PathVariable Long id, @Valid  @RequestBody TodoRequestDTO todoRequestDTO) {
+        TodoResponseDTO created = todoService.createTodo(id, todoRequestDTO);
+        return ResponseEntity.created(URI.create("/api/" + created.getId()))
+                .body(created);
     }
 
-    @DeleteMapping("/{id}")
-    void deleteTodo (@PathVariable Long id) {
-        todoService.deleteTodo(id);
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<TodoResponseDTO> updateTodo (@PathVariable Long id, @RequestBody TodoRequestDTO todoRequestDTO) {
+        return ResponseEntity.ok(todoService.updateTodo(id, todoRequestDTO));
     }
 
-
-
-
-
-
-
-
-
-
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> deleteTodoById (@PathVariable Long id) {
+        todoService.deleteTodoById(id);
+        return ResponseEntity.noContent().build();
+    }
 
 
 }
