@@ -34,7 +34,7 @@ public class UsersController {
     @PostMapping
     public ResponseEntity<UserResponseDTO> createUser (@Valid @RequestBody UserRequestDTO userRequestDTO) {
         UserResponseDTO created = usersService.createUser(userRequestDTO);
-        return ResponseEntity.created(URI.create("/api/" + created.getId()))
+        return ResponseEntity.created(URI.create("/api" + created.getId()))
                 .body(created);
     }
 
