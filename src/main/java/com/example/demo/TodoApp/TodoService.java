@@ -42,7 +42,7 @@ public class TodoService {
 
     public TodoResponseDTO createTodo (Long id, TodoRequestDTO todoRequestDTO) {
         Users user = usersRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException(id + " not found!"));
+                .orElseThrow(() -> new IllegalStateException(String.format("User with id %d not found!", id)));
         return fetchAllTodosWithUser(
                 todoRepository.save(
                         new Todo(
