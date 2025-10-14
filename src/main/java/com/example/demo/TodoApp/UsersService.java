@@ -31,7 +31,7 @@ public class UsersService {
 
     public UserResponseDTO getUserById(Long id) {
         Users found = usersRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException(id + " not found!"));
+                .orElseThrow(() -> new IllegalStateException(String.format("User with id %d not found!", id)));
         return fetchUsersWithTodos(found);
     }
 
